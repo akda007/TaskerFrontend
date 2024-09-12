@@ -1,10 +1,11 @@
 import { Container } from "@mui/material";
 import { AddButton, ContentHolder } from "./styles";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { api } from "../../api";
 import { AxiosError } from "axios";
 import TaskCard from "./components/TaskCard";
 import AddTask from "./components/AddTask";
+import useMouse from "@react-hook/mouse-position";
 
 interface ITaskResponse {
     id: number,
@@ -14,7 +15,14 @@ interface ITaskResponse {
 }
 
 export default function TaskDisplay() {
+    const [update, forceUpdate] = useReducer(x => x + 1, 0);
     const token = sessionStorage.getItem("token")
+
+    const ref = useRef(null);
+    const mouse = useMouse(ref, {
+        enterDelay: 100,
+        leaveDelay: 100
+    })
 
     const [tasks, setTasks] = useState<ITaskResponse[]>([])
     const [showAdd, setShowAdd] = useState(false)
@@ -28,7 +36,7 @@ export default function TaskDisplay() {
             alert(err.message)
         })
 
-    }, [showAdd])
+    }, [showAdd, update])
 
     return (
         <>
@@ -38,7 +46,7 @@ export default function TaskDisplay() {
                 overflow: "auto",
                 padding: "80px 50px 50px 50px"
             }}>
-                <ContentHolder position="relative">
+                <ContentHolder position="relative" ref={ref}>
                     {tasks.map((task, index) =>
                         <TaskCard
                             key={index}
@@ -46,6 +54,8 @@ export default function TaskDisplay() {
                             title={task.title}
                             description={task.description}
                             status={task.status}
+                            mouse={mouse}
+                            forceUpdate={forceUpdate}
                         />
                     )}
                 </ContentHolder>

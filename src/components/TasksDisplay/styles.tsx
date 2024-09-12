@@ -3,7 +3,7 @@ import { Button, Stack, styled } from "@mui/material";
 export const ContentHolder = styled(Stack)(({theme}) => ({
     flexDirection: "row",
     width: "100%",
-    minHeight: "100vh",
+    minHeight: "100%",
     position: "relative",
     flexWrap: "wrap",
     gap: "30px",

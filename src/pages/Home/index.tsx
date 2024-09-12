@@ -1,17 +1,15 @@
-import { ReactNode, useContext, useState } from "react"
-import { SessionContext } from "../../providers/SessionContext"
+import { ReactNode, useState } from "react"
 import MainNavigation from "../../components/MainNavigation"
-import { Box, Stack } from "@mui/material"
-import { HomeLayout } from "./styles"
+import { ContentDisplay, HomeLayout } from "./styles"
+import TaskDisplay from "../../components/TasksDisplay"
 
 export default function Home() {
-
-    const { token } = useContext(SessionContext)
+    
     const [content, setContent] = useState<ReactNode>(<></>)
     const [showNav, setShowNav] = useState(false);
 
     const handleSetTasks = () => {
-        setContent(<h2>Tasks</h2>)
+        setContent(<TaskDisplay/>)
     }
 
     const handleSetGroups = () => {
@@ -32,9 +30,9 @@ export default function Home() {
                     setShowNav={setShowNav}
                     showNav={showNav}
                 />
-                <Stack>
+                <ContentDisplay nvisible={showNav}>
                     {content}
-                </Stack>
+                </ContentDisplay>
             </HomeLayout>
         </>
     )

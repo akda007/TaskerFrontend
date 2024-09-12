@@ -9,6 +9,7 @@ interface INavigationBody {
 export const NavigationBody = styled(Stack)<INavigationBody>(({ theme, show }) => ({
     backgroundColor:"rgb(255, 255, 255)",
     height: "100vh",
+    minWidth: "320px",
     gap: "30px",
     padding: "10px 20px",
     transition: "300ms",
@@ -29,6 +30,8 @@ export const DrawerButton = styled(Button)(({theme}) => ({
     top: "2%",
     right: "2%",
     maxWidth: "50px",
+    zIndex: "999",
+    backgroundColor: "white",
 
     [theme.breakpoints.up("sm")]: {
         ...{

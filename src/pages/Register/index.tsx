@@ -1,9 +1,9 @@
-import { useContext, useState } from "react"
-import { SessionContext } from "../../providers/SessionContext"
-import { Box, Button, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from "@mui/material"
+import { useState } from "react"
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from "@mui/material"
 import { RegisterForm } from "./styles"
-import axios, { AxiosError } from "axios"
-import { redirect, useNavigate } from "react-router-dom"
+import { AxiosError } from "axios"
+import { useNavigate } from "react-router-dom"
+import { api } from "../../api"
 
 
 export default function Register() {
@@ -15,7 +15,7 @@ export default function Register() {
     const [showPassword, setShowPassword] = useState(false);
 
     const registerHandler = async () => {
-       axios.post("http://localhost:5000/register", {username, password, email}).then(res => {
+       api.post("http://localhost:5000/register", {username, password, email}).then(res => {
         alert(res.data.msg)
         navigate("/")
        }).catch((err: AxiosError) => {

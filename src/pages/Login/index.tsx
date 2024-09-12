@@ -1,17 +1,15 @@
-import { useContext, useState } from "react"
-import { SessionContext } from "../../providers/SessionContext"
-import { Box, Button, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from "@mui/material"
+import { useState } from "react"
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from "@mui/material"
 import { LoginForm } from "./styles"
-import axios, { AxiosError } from "axios"
-import { Link, redirect, useNavigate } from "react-router-dom"
+import { AxiosError } from "axios"
+import { Link, useNavigate } from "react-router-dom"
+import { api } from "../../api"
 
 interface ILoginResponse {
     access_token: string
 }
 
 export default function Login() {
-    const {token, setToken} = useContext(SessionContext)
-    
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("")
@@ -19,11 +17,12 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
 
     const loginHandler = async () => {
-        axios.post<ILoginResponse>("http://127.0.01:5000/login", {
+        api.post<ILoginResponse>("/login", {
             username,
             password
         }).then(res => {
-            setToken(res.data.access_token)
+            sessionStorage.setItem("token", res.data.access_token)
+
             navigate("/home")
         }).catch((e: AxiosError) => {
             alert(e.message)

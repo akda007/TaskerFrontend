@@ -1,29 +1,35 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
 import { useState } from "react"
-import { api } from "../../../../api"
+import { api } from "../../../../../../api"
 import { AxiosError } from "axios"
 
-interface IAddTaskProps {
+interface IEditTaskProps {
     open: boolean
-    setOpen: (value: boolean) => void
+    setOpen: (value: boolean) => void,
+    id: number,
+    title: string,
+    description: string,
+    status: string,
+    forceUpdate: () => void
 }
 
-export default function AddTask({ open, setOpen }: IAddTaskProps) {
+export default function EditModal({ open, setOpen, title, description, status, id, forceUpdate }: IEditTaskProps) {
     const token = sessionStorage.getItem("token")
 
-    const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
-    const [status, setStatus] = useState("")
+    const [_title, setTitle] = useState(title)
+    const [_description, setDescription] = useState(description)
+    const [_status, setStatus] = useState(status)
 
     const handleSubmit = () => {
-        api.post("/tasks", {
-            title,
-            description,
-            status
+        api.patch(`/tasks/${id}`, {
+            title: _title,
+            description: _description,
+            status: _status
         }, { headers: { Authorization: `Bearer ${token}`}}).then(res => {
             alert(res.data.message)
 
             setOpen(false)
+            forceUpdate()
         }).catch((err: AxiosError) => {
             alert(err.message)
         })
@@ -34,7 +40,7 @@ export default function AddTask({ open, setOpen }: IAddTaskProps) {
             <Modal
                 open={open}
                 onClose={() => setOpen(false)}
-                aria-labelledby="modal-modal-title"
+                aria-labelledby="edit-modal-title"
                 sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -51,25 +57,30 @@ export default function AddTask({ open, setOpen }: IAddTaskProps) {
                         borderRadius: "20px"
                     }}
                 >
-                    <Typography id="modal-modal-title" variant="h6" component="h2">Create Task</Typography>
+                    <Typography id="edit-modal-title" variant="h6" component="h2">Edit Task</Typography>
 
                     <Stack gap={4} my={3} sx={{minWidth: "400px"}}>
-                        <TextField label="Title" onChange={(e) => setTitle(e.target.value)}></TextField>
+                        <TextField
+                            label="Title"
+                            onChange={(e) => setTitle(e.target.value)}
+                            value={_title}
+                        />
+
                         <TextField
                             label="Description"
                             onChange={(e) => setDescription(e.target.value)}
-                            value={description}
+                            value={_description}
                             multiline
                             maxRows={4}
                             rows={4}
                         />
 
                         <FormControl fullWidth>
-                            <InputLabel id="select-label">Status</InputLabel>
+                            <InputLabel id="edit-select-label">Status</InputLabel>
                             <Select
-                                labelId="select-label"
-                                id="select-status"
-                                value={status}
+                                labelId="edit-select-label"
+                                id="edit-select-status"
+                                value={_status}
                                 label="Status"
                                 onChange={(e) => setStatus(e.target.value)}
                             >
@@ -84,7 +95,7 @@ export default function AddTask({ open, setOpen }: IAddTaskProps) {
                         sx={{alignSelf: "flex-end"}}
                         variant="outlined"
                         onClick={handleSubmit}
-                    >Add</Button>
+                    >Edit</Button>
                 </Stack>
 
             </Modal>

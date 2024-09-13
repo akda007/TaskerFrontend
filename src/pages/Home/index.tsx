@@ -2,9 +2,9 @@ import { ReactNode, useState } from "react"
 import MainNavigation from "../../components/MainNavigation"
 import { ContentDisplay, HomeLayout } from "./styles"
 import TaskDisplay from "../../components/TasksDisplay"
+import GroupsDisplay from "../../components/GroupsDisplay"
 
 export default function Home() {
-    
     const [content, setContent] = useState<ReactNode>(<></>)
     const [showNav, setShowNav] = useState(false);
 
@@ -13,7 +13,7 @@ export default function Home() {
     }
 
     const handleSetGroups = () => {
-        setContent(<h2>Groups</h2>)
+        setContent(<GroupsDisplay/>)
     }
 
     const handleSetConfig = () => {

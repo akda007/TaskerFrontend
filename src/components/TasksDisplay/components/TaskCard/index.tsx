@@ -1,10 +1,10 @@
 import { Box, Stack, Typography } from "@mui/material"
 import { TaskBody } from "./styles"
 import Draggable from "react-draggable"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { Item, Menu, useContextMenu } from "react-contexify"
 import 'react-contexify/ReactContexify.css';
-import useMouse, { MousePosition } from "@react-hook/mouse-position"
+import { MousePosition } from "@react-hook/mouse-position"
 import { api } from "../../../../api"
 import { AxiosError } from "axios"
 import EditModal from "./components/EditModal"
@@ -27,7 +27,7 @@ export default function TaskCard({id, description, status, title, mouse, forceUp
     const handleDelete = () => {
         api.delete(`/tasks/${id}`, {
             headers: {Authorization: `Bearer ${token}`}
-        }).then(res => {
+        }).then(() => {
             forceUpdate()            
         }).catch((err: AxiosError) => {
             alert(err.message)

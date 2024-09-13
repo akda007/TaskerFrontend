@@ -3,8 +3,8 @@ import { ButtonBody, ButtonImage, DrawerButton, NavigationBody } from "./styles"
 import cog from "../../assets/cog.svg"
 import groups from "../../assets/groups.svg"
 import tasks from "../../assets/tasks.svg"
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useJwt } from "react-jwt";
 
 interface INavigationProps {
     setPageTasks: () => void,
@@ -16,11 +16,20 @@ interface INavigationProps {
 
 export default function MainNavigation({setPageTasks, setPageGroups, setPageProfile, setShowNav, showNav}: INavigationProps) {
     const navigate = useNavigate()
+    const token = sessionStorage.getItem("token")
+
+    const { isExpired } = useJwt(token ?? "")
 
     const logoutHandler = () => {
         sessionStorage.removeItem("token")
         navigate("/")
     }
+
+    if (isExpired) {
+        logoutHandler();
+    }
+
+
     return (
         <>
     

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Stack, styled } from "@mui/material";
 
 interface ITaskBodyProps {

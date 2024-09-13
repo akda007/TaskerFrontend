@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
+import { Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
 import { useState } from "react"
 import { api } from "../../../../../../api"
 import { AxiosError } from "axios"
@@ -25,7 +25,7 @@ export default function EditModal({ open, setOpen, title, description, status, i
             title: _title,
             description: _description,
             status: _status
-        }, { headers: { Authorization: `Bearer ${token}`}}).then(res => {
+        }, { headers: { Authorization: `Bearer ${token}`}}).then(() => {
             setOpen(false)
             forceUpdate()
         }).catch((err: AxiosError) => {

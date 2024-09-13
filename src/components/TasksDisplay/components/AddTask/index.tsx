@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
+import { Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
 import { useState } from "react"
 import { api } from "../../../../api"
 import { AxiosError } from "axios"
@@ -20,7 +20,7 @@ export default function AddTask({ open, setOpen }: IAddTaskProps) {
             title,
             description,
             status
-        }, { headers: { Authorization: `Bearer ${token}`}}).then(res => {
+        }, { headers: { Authorization: `Bearer ${token}`}}).then(() => {
             setOpen(false)
         }).catch((err: AxiosError) => {
             alert(err.message)

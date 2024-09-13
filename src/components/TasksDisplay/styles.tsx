@@ -1,6 +1,6 @@
 import { Button, Stack, styled } from "@mui/material";
 
-export const ContentHolder = styled(Stack)(({theme}) => ({
+export const ContentHolder = styled(Stack)(() => ({
     flexDirection: "row",
     width: "100%",
     minHeight: "100%",
@@ -11,7 +11,7 @@ export const ContentHolder = styled(Stack)(({theme}) => ({
     justifyContent: "center",
 }))
 
-export const AddButton = styled(Button)(({theme}) => ({
+export const AddButton = styled(Button)(() => ({
     borderRadius: "50%",
     aspectRatio: 1/1,
     width: "60px",

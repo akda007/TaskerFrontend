@@ -15,7 +15,7 @@ export default function Register() {
     const [showPassword, setShowPassword] = useState(false);
 
     const registerHandler = async () => {
-       api.post("http://localhost:5000/register", {username, password, email}).then(res => {
+       api.post("http://localhost:5000/register", {username, password, email}).then(() => {
         navigate("/")
        }).catch((err: AxiosError) => {
         alert(err.message)

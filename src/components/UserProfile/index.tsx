@@ -1,15 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Stack, TextField, Typography } from "@mui/material"
 import {  InfoContainer, MainContentHolder } from "./styles"
-import { useContext, useEffect, useState } from "react"
-import { UserContext } from "../../providers/UserContext"
+import { useEffect, useState } from "react"
 import { useJwt } from "react-jwt"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { api } from "../../api"
 
 export default function UserProfile() {
     const token = sessionStorage.getItem("token");
 
-    const {decodedToken, isExpired} = useJwt(token ?? "")
+    const {decodedToken} = useJwt(token ?? "")
 
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")

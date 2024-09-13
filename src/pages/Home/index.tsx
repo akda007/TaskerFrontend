@@ -3,6 +3,7 @@ import MainNavigation from "../../components/MainNavigation"
 import { ContentDisplay, HomeLayout } from "./styles"
 import TaskDisplay from "../../components/TasksDisplay"
 import GroupsDisplay from "../../components/GroupsDisplay"
+import UserProfile from "../../components/UserProfile"
 
 export default function Home() {
     const [content, setContent] = useState<ReactNode>(<></>)
@@ -28,7 +29,7 @@ export default function Home() {
         setContent(<></>)
 
         setTimeout(() => {
-            setContent(<h2>Profile</h2>)
+            setContent(<UserProfile/>)
         })
     }
 

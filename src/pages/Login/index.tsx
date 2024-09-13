@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from "@mui/material"
 import { LoginForm } from "./styles"
 import { AxiosError } from "axios"
@@ -12,8 +12,9 @@ interface ILoginResponse {
 export default function Login() {
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState("")
+
     const [password, setPassword] = useState("")
+    const [username, setUsername] = useState("")
     const [showPassword, setShowPassword] = useState(false);
 
     const loginHandler = async () => {
@@ -21,7 +22,9 @@ export default function Login() {
             username,
             password
         }).then(res => {
-            sessionStorage.setItem("token", res.data.access_token)
+            const token = res.data.access_token;
+
+            sessionStorage.setItem("token", token)
 
             navigate("/home")
         }).catch((e: AxiosError) => {

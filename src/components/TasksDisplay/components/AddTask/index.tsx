@@ -23,7 +23,20 @@ export default function AddTask({ open, setOpen }: IAddTaskProps) {
         }, { headers: { Authorization: `Bearer ${token}`}}).then(() => {
             setOpen(false)
         }).catch((err: AxiosError) => {
-            alert(err.message)
+            const data = e.response?.data as ITextResponse;
+
+            toast.error(
+                data.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            })
         })
     }
 

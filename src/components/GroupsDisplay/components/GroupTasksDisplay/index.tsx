@@ -1,11 +1,12 @@
 import { Container, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { AddButton, ContentHolder } from "./styles";
 import { useEffect, useReducer, useRef, useState } from "react";
-import { api } from "../../../../api";
+import { api, ITextResponse } from "../../../../api";
 import { AxiosError } from "axios";
 import TaskCard from "./components/TaskCard";
 import AddTask from "./components/AddTask";
 import useMouse from "@react-hook/mouse-position";
+import { Bounce, toast } from "react-toastify";
 
 interface ITaskResponse {
     id: number,
@@ -38,7 +39,20 @@ export default function GroupTasksDisplay({groupId}: IGroupsTaskDisplayProps) {
         }).then(res => {
             setTasks(res.data)
         }).catch((err: AxiosError) => {
-            alert(err.message)
+            const data = err.response?.data as ITextResponse;
+
+            toast.error(
+                data.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            })
         })
 
     }, [showAdd, update, status])

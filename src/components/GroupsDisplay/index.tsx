@@ -1,11 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Stack, Typography } from "@mui/material";
 import { AddButton, GroupListContainer, MainContentHolder } from "./styles";
 import { useEffect, useReducer, useState } from "react";
-import { api } from "../../api";
-import axios, { AxiosError } from "axios";
+import { api, ITextResponse } from "../../api";
+import { AxiosError } from "axios";
 import GroupItem from "./components/GroupItem";
 import AddGroupModal from "./components/AddGroupModal";
 import GroupTasksDisplay from "./components/GroupTasksDisplay";
+import { Bounce, toast } from "react-toastify";
 
 interface IGroupsResponse {
     id: number,
@@ -17,7 +19,6 @@ export default function GroupsDisplay() {
     const [components, setComponents] = useState<JSX.Element | null>(null)
     const [groups, setGroups] = useState<IGroupsResponse[]>([])
     const [openModal, setOpenModal] = useState(false)
-    const [addPersonModal, setAddPersonModal] = useState(false)
 
     const token = sessionStorage.getItem("token")
 
@@ -27,7 +28,20 @@ export default function GroupsDisplay() {
         }).then(res => {
             setGroups(res.data)
         }).catch((err: AxiosError) => {
-            alert(err.message)
+            const data = err.response?.data as ITextResponse;
+
+            toast.error(
+                data.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            })
         }) 
     }, [openModal, update])
 
@@ -38,10 +52,23 @@ export default function GroupsDisplay() {
     const handleGroupDelete = (id: number) => {
         api.delete(`/groups/${id}`, {
             headers: {Authorization: `Bearer ${token}`}
-        }).then(res => {
+        }).then(() => {
             forceUpdate();
         }).catch((err: AxiosError) => {
-            alert(err.message)
+            const data = err.response?.data as ITextResponse;
+
+            toast.error(
+                data.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            })
         })
     }
 

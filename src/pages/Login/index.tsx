@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react"
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from "@mui/material"
 import { LoginForm } from "./styles"
 import { AxiosError } from "axios"
 import { Link, useNavigate } from "react-router-dom"
-import { api } from "../../api"
+import { api, ITextResponse } from "../../api"
+import { Bounce, toast } from "react-toastify"
 
 interface ILoginResponse {
     access_token: string
@@ -28,7 +30,20 @@ export default function Login() {
 
             navigate("/home")
         }).catch((e: AxiosError) => {
-            alert(e.message)
+            const data = e.response?.data as ITextResponse;
+
+            toast.error(
+                data.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            })
         })
     }
 

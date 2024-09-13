@@ -4,7 +4,8 @@ import {  InfoContainer, MainContentHolder } from "./styles"
 import { useEffect, useState } from "react"
 import { useJwt } from "react-jwt"
 import { AxiosError } from "axios"
-import { api } from "../../api"
+import { api, ITextResponse } from "../../api"
+import { Bounce, toast } from "react-toastify"
 
 export default function UserProfile() {
     const token = sessionStorage.getItem("token");
@@ -37,7 +38,20 @@ export default function UserProfile() {
                 sessionStorage.setItem("token", res.data.token)
 
             }).catch((err: AxiosError) => {
-                alert(err.message)
+                const data = err.response?.data as ITextResponse;
+
+                toast.error(
+                    data.msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                })
             })
             
             setEnableEdit(false)

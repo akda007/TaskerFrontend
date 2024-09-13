@@ -1,7 +1,8 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
+import { Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
 import { useState } from "react"
-import { api } from "../../../../../../api"
+import { api, ITextResponse } from "../../../../../../api"
 import { AxiosError } from "axios"
+import { Bounce, toast } from "react-toastify"
 
 interface IAddTaskProps {
     open: boolean,
@@ -21,10 +22,23 @@ export default function AddTask({ open, setOpen, groupId }: IAddTaskProps) {
             title,
             description,
             status
-        }, { headers: { Authorization: `Bearer ${token}`}}).then(res => {
+        }, { headers: { Authorization: `Bearer ${token}`}}).then(() => {
             setOpen(false)
         }).catch((err: AxiosError) => {
-            alert(err.message)
+            const data = err.response?.data as ITextResponse;
+
+            toast.error(
+                data.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            })
         })
     }
 

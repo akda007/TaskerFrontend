@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { styled, Stack, Button } from "@mui/material";
 
 export const GroupListContainer = styled(Stack)(() => ({

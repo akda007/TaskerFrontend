@@ -1,7 +1,8 @@
-import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
+import { Autocomplete, Button, Modal, Stack, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import { api } from "../../../../api"
+import { api, ITextResponse } from "../../../../api"
 import { AxiosError } from "axios"
+import { Bounce, toast } from "react-toastify"
 
 interface IAddGroupProps {
     open: boolean
@@ -14,11 +15,11 @@ interface IUserResponse {
     username: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function AddPersonModal({ open, setOpen, groupId, forceReload }: IAddGroupProps) {
     const token = sessionStorage.getItem("token")
 
     const [name, setName] = useState<string | null>("")
-    const [selectedUsers, setSelectedUsers] = useState<string | null>("")
     const [users, setUsers] = useState<string[]>([]);
 
     useEffect(() => {
@@ -28,18 +29,44 @@ export default function AddPersonModal({ open, setOpen, groupId, forceReload }: 
         }).then(res => {
             setUsers(res.data.map(u => u.username))
         }).catch((err: AxiosError) => {
-            alert(err.message)
+            const data = err.response?.data as ITextResponse;
+
+            toast.error(
+                data.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            })
         })
     }, [name, open])
 
     const handleSubmit = () => {
         api.post("/groups/add", {group_id: groupId, target_user: name}, { 
             headers: { Authorization: `Bearer ${token}`}
-        }).then(res => {
+        }).then(() => {
 
             setOpen(false)
         }).catch((err: AxiosError) => {
-            alert(err.message)
+            const data = err.response?.data as ITextResponse;
+
+            toast.error(
+                data.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            })
         })
         setName("")
     }

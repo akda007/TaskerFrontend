@@ -23,6 +23,7 @@
     "react-jwt": "^1.2.2",
     "react-rnd": "^10.4.12",
     "react-router-dom": "^6.26.2",
+    "react-toastify": "^10.0.5",
     "taskerfrontend": "file:"
   },
   "devDependencies": {

@@ -52,7 +52,9 @@ export default function UserProfile() {
             <MainContentHolder>
                 <InfoContainer flexDirection={"column"} alignContent={"center"}>
                     <Typography variant="h3" textAlign={"center"}>Profile</Typography>
-
+                    <Stack alignItems={"center"} justifyContent={"center"}>
+                        <span className="material-symbols-outlined" style={{fontSize: "160px", fontWeight: "50"}}>account_circle</span>
+                    </Stack>
                     <Stack gap={5} my={3} mx={5} alignItems={"center"}>
                         <Stack gap={3} width={"100%"}>
                             <TextField

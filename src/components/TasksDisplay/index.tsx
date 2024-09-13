@@ -46,7 +46,8 @@ export default function TaskDisplay() {
                 height: "100vh",
                 overflow: "auto",
                 padding: "80px 50px 50px 50px",
-                position: 'relative'
+                position: 'relative',
+                maxWidth: "none !important"
             }}>
                 <ContentHolder position="relative" ref={ref}>
                     {tasks.map((task, index) =>

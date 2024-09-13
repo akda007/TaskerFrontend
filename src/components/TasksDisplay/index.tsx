@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { AddButton, ContentHolder } from "./styles";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { api } from "../../api";
@@ -26,25 +26,27 @@ export default function TaskDisplay() {
 
     const [tasks, setTasks] = useState<ITaskResponse[]>([])
     const [showAdd, setShowAdd] = useState(false)
+    const [status, setStatus] = useState("")
 
     useEffect(() => {
-        api.get<ITaskResponse[]>( "/tasks", {
-                headers: { Authorization: `Bearer ${token}` }
+        api.get<ITaskResponse[]>(`/tasks?status=${status}`, {
+            headers: { Authorization: `Bearer ${token}` }
         }).then(res => {
             setTasks(res.data)
         }).catch((err: AxiosError) => {
             alert(err.message)
         })
 
-    }, [showAdd, update])
+    }, [showAdd, update, status])
 
     return (
         <>
-            <AddTask open={showAdd} setOpen={setShowAdd}/>
+            <AddTask open={showAdd} setOpen={setShowAdd} />
             <Container sx={{
                 height: "100vh",
                 overflow: "auto",
-                padding: "80px 50px 50px 50px"
+                padding: "80px 50px 50px 50px",
+                position: 'relative'
             }}>
                 <ContentHolder position="relative" ref={ref}>
                     {tasks.map((task, index) =>
@@ -60,8 +62,31 @@ export default function TaskDisplay() {
                     )}
                 </ContentHolder>
                 <AddButton variant="outlined" onClick={() => setShowAdd(true)}>
-                    <span style={{fontSize: "2.5em"}} className="material-symbols-outlined">add</span>
+                    <span style={{ fontSize: "2.5em" }} className="material-symbols-outlined">add</span>
                 </AddButton>
+
+                <FormControl fullWidth sx={{
+                    position: "absolute",
+                    top: "2%",
+                    left: "2%",
+                    width: "60%",
+                    maxWidth: "300px"
+                }}>
+                    <InputLabel id="filter-label">Status</InputLabel>
+                    <Select
+                        labelId="filter-label"
+                        id="filter-status"
+                        value={status}
+                        label="Status"
+                        onChange={(e) => setStatus(e.target.value)}
+                        color="primary"
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        <MenuItem value="pending">Pending</MenuItem>
+                        <MenuItem value="active">Active</MenuItem>
+                        <MenuItem value="finished">Finished</MenuItem>
+                    </Select>
+                </FormControl>
             </Container>
         </>
     )

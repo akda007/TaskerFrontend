@@ -26,8 +26,6 @@ export default function EditModal({ open, setOpen, title, description, status, i
             description: _description,
             status: _status
         }, { headers: { Authorization: `Bearer ${token}`}}).then(res => {
-            alert(res.data.message)
-
             setOpen(false)
             forceUpdate()
         }).catch((err: AxiosError) => {

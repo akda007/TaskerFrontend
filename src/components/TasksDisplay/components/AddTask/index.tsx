@@ -21,8 +21,6 @@ export default function AddTask({ open, setOpen }: IAddTaskProps) {
             description,
             status
         }, { headers: { Authorization: `Bearer ${token}`}}).then(res => {
-            alert(res.data.message)
-
             setOpen(false)
         }).catch((err: AxiosError) => {
             alert(err.message)

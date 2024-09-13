@@ -5,7 +5,7 @@ import { useRef, useState } from "react"
 import { Item, Menu, useContextMenu } from "react-contexify"
 import 'react-contexify/ReactContexify.css';
 import useMouse, { MousePosition } from "@react-hook/mouse-position"
-import { api } from "../../../../api"
+import { api } from "../../../../../../api"
 import { AxiosError } from "axios"
 import EditModal from "./components/EditModal"
 
@@ -51,6 +51,23 @@ export default function TaskCard({id, description, status, title, mouse, forceUp
         })
     }
 
+    let shadowColor = "";
+
+    switch (status.toLowerCase()){
+        case "pending":
+            shadowColor = "#f2bd2a28"
+            break;
+        case "active":
+            shadowColor = "#16b22128"
+            break;
+            case "finished":
+            shadowColor = "#4036c528"
+            break;
+        default:
+            shadowColor = "#46464628"
+            break;  
+    }
+
     return (
         <>
             <EditModal
@@ -69,6 +86,7 @@ export default function TaskCard({id, description, status, title, mouse, forceUp
             >
                 <TaskBody
                     onContextMenu={handleContextMenu}
+                    shadowColor={shadowColor}
                 >
                     <Box>
                         <Typography variant="h4" sx={{wordWrap: "break-word"}}>{title}</Typography>

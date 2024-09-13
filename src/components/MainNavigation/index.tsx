@@ -8,12 +8,12 @@ import { useState } from "react";
 interface INavigationProps {
     setPageTasks: () => void,
     setPageGroups: () => void,
-    setPageConfig: () => void,
+    setPageProfile: () => void,
     showNav: boolean,
     setShowNav: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function MainNavigation({setPageTasks, setPageGroups, setPageConfig, setShowNav, showNav}: INavigationProps) {
+export default function MainNavigation({setPageTasks, setPageGroups, setPageProfile, setShowNav, showNav}: INavigationProps) {
 
     return (
         <>
@@ -38,8 +38,8 @@ export default function MainNavigation({setPageTasks, setPageGroups, setPageConf
                         <ButtonImage src={groups} alt="" />
                     </ButtonBody>
 
-                    <ButtonBody marginTop={"auto"} onClick={setPageConfig}>
-                        <Typography variant="h5">Config</Typography>
+                    <ButtonBody marginTop={"auto"} onClick={setPageProfile}>
+                        <Typography variant="h5">Profile</Typography>
                         <ButtonImage src={cog} alt="" />
                     </ButtonBody>
 

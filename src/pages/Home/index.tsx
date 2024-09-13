@@ -9,22 +9,34 @@ export default function Home() {
     const [showNav, setShowNav] = useState(false);
 
     const handleSetTasks = () => {
-        setContent(<TaskDisplay/>)
+        setContent(<></>)
+
+        setTimeout(() => {
+            setContent(<TaskDisplay/>)
+        })
     }
 
     const handleSetGroups = () => {
-        setContent(<GroupsDisplay/>)
+        setContent(<></>)
+
+        setTimeout(() => {
+            setContent(<GroupsDisplay/>)
+        })
     }
 
-    const handleSetConfig = () => {
-        setContent(<h2>Config</h2>)
+    const handleSetProfile = () => {
+        setContent(<></>)
+
+        setTimeout(() => {
+            setContent(<h2>Profile</h2>)
+        })
     }
 
     return (
         <>
             <HomeLayout>
                 <MainNavigation
-                    setPageConfig={handleSetConfig} 
+                    setPageProfile={handleSetProfile} 
                     setPageGroups={handleSetGroups}
                     setPageTasks={handleSetTasks}
                     setShowNav={setShowNav}

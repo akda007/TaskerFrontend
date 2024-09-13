@@ -16,7 +16,6 @@ export default function Register() {
 
     const registerHandler = async () => {
        api.post("http://localhost:5000/register", {username, password, email}).then(res => {
-        alert(res.data.msg)
         navigate("/")
        }).catch((err: AxiosError) => {
         alert(err.message)

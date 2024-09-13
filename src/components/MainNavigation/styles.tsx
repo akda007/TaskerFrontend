@@ -43,19 +43,25 @@ export const DrawerButton = styled(Button)(({theme}) => ({
 
 export const ButtonBody = styled(Stack)(({}) => ({
     justifyContent: "space-between",
-    borderRadius: "20px",
-    backgroundColor: "#c5c5c5",
+    borderRadius: "5px",
+    backgroundColor: "#dfdfdf",
     flexDirection: "row",
     alignItems: "center",
     width: "90%",
     padding: "10px 20px",
-    transition: "300ms",
+    transition: "100ms",
     boxShadow: "4px 4px 10px 3px #0000002a",
     maxWidth: "500px",
     minWidth: "280px",
+    maxHeight: "78px",
 
     "&:hover": {
-        transform: "translateY(-2px) scale(1.1)"
+        backgroundColor: "#c5c5c5",
+    },
+
+    "&:active": {
+        backgroundColor: "#dbdbdb",
+        transform: "translateY(1px) scale(0.99)"
     },
 
 }))

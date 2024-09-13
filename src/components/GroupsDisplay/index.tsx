@@ -1,9 +1,11 @@
 import { Stack, Typography } from "@mui/material";
 import { AddButton, GroupListContainer, MainContentHolder } from "./styles";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { api } from "../../api";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import GroupItem from "./components/GroupItem";
+import AddGroupModal from "./components/AddGroupModal";
+import GroupTasksDisplay from "./components/GroupTasksDisplay";
 
 interface IGroupsResponse {
     id: number,
@@ -11,7 +13,11 @@ interface IGroupsResponse {
 }
 
 export default function GroupsDisplay() {
+    const [update, forceUpdate] = useReducer(x => x + 1, 0);
+    const [components, setComponents] = useState<JSX.Element | null>(null)
     const [groups, setGroups] = useState<IGroupsResponse[]>([])
+    const [openModal, setOpenModal] = useState(false)
+    const [addPersonModal, setAddPersonModal] = useState(false)
 
     const token = sessionStorage.getItem("token")
 
@@ -23,26 +29,55 @@ export default function GroupsDisplay() {
         }).catch((err: AxiosError) => {
             alert(err.message)
         }) 
-    }, [])
+    }, [openModal, update])
+
+    const handleGroupClick = (id: number) => {
+        setComponents(<GroupTasksDisplay groupId={id}/>)
+    }
+
+    const handleGroupDelete = (id: number) => {
+        api.delete(`/groups/${id}`, {
+            headers: {Authorization: `Bearer ${token}`}
+        }).then(res => {
+            forceUpdate();
+        }).catch((err: AxiosError) => {
+            alert(err.message)
+        })
+    }
 
     return (
         <>
-            
-            <MainContentHolder>
-                <GroupListContainer flexDirection={"column"} alignContent={"center"}>
-                    <Typography variant="h3" textAlign={"center"}>Groups</Typography>
+            {(components ?? <>
+                <AddGroupModal open={openModal} setOpen={setOpenModal}/>
+                <MainContentHolder>
+                    <GroupListContainer flexDirection={"column"} alignContent={"center"}>
+                        <Typography variant="h3" textAlign={"center"}>Groups</Typography>
 
-                    <Stack>
-                        {groups.map(group => 
-                            <GroupItem key={group.id} name={group.name}></GroupItem>
-                        )}
-                    </Stack>
-                    
-                    <AddButton variant="outlined" onClick={() => {}}>
-                        <span style={{fontSize: "2.5em"}} className="material-symbols-outlined">add</span>
-                    </AddButton>
-                </GroupListContainer>
-            </MainContentHolder>
+                        <Stack gap={2}>
+                            {groups.map(group => 
+                                <GroupItem
+                                    key={group.id}
+                                    groupId={group.id}
+                                    name={group.name}
+                                    onClick={() => handleGroupClick(group.id)}
+                                    forceUpdate={forceUpdate}
+                                    onDelete={() => handleGroupDelete(group.id)}
+
+                                />
+                            )}
+                        </Stack>
+                        
+                        <AddButton variant="outlined" onClick={() => {setOpenModal(true)}}>
+                            <span style={{fontSize: "2.5em"}} className="material-symbols-outlined">add</span>
+                        </AddButton>
+                    </GroupListContainer>
+                </MainContentHolder>
+            </>) ||
+            <>
+             {components}
+            </>
+            }
+
         </>
     )
 }
